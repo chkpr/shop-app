@@ -40,6 +40,7 @@ final class ProductFactory extends PersistentObjectFactory
             'name' => self::faker()->text(255),
             'price' => self::faker()->randomNumber(),
             'slug' => self::faker()->text(255),
+            'stock' => self::faker()->numberBetween(0, 100),
         ];
     }
 

@@ -26,7 +26,7 @@ class Product
     #[ORM\Column]
     private ?int $price = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column]
     private ?int $stock = null;
 
     #[ORM\Column]
