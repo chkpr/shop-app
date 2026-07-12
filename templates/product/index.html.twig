@@ -10,7 +10,7 @@
 
     <ul>
         {% for product in products %}
-            <li>{{ product.name }} - {{ product.price }}</li>
+            <li>{{ product.name }} - {{ product.priceAsDecimal|format_currency('EUR') }}</li>
          {%  else %}
             <li>Aucun produit pour le moment</li>
          {%  endfor %}

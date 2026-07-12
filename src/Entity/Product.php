@@ -124,4 +124,9 @@ class Product
 
         return $this;
     }
+
+    public function getPriceAsDecimal():float
+    {
+        return $this->price/100;
+    }
 }
