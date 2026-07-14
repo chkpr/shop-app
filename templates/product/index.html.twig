@@ -10,7 +10,9 @@
 
     <ul>
         {% for product in products %}
-            <li>{{ product.name }} - {{ product.priceAsDecimal|format_currency('EUR') }}</li>
+            <li><a href="{{ path('app_product_show', {slug: product.slug}) }}">
+                    {{ product.name }} - {{ product.priceAsDecimal|format_currency('EUR') }} </a>
+            </li>
          {%  else %}
             <li>Aucun produit pour le moment</li>
          {%  endfor %}
