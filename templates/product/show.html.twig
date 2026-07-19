@@ -8,4 +8,5 @@
     <p>catégorie: {{ product.category.name }}</p>
     <p>{{ product.description }}</p>
 <p>{{ product.priceAsDecimal|format_currency('EUR') }}</p>
+    <a href="{{ path('app_cart_add', {id: product.id}) }}">Ajouter au panier</a>
 {% endblock %}
