@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande confirmée{% endblock %}
+
+{% block body %}
+    <h1>Merci pour votre commande !</h1>
+
+    {% if order %}
+        <p>Commande n°{{ order.id }} enregistrée.</p>
+        <p>Total : {{ (order.total / 100)|format_currency('EUR') }}</p>
+
+        <h2>Détail</h2>
+        <ul>
+            {% for item in order.items %}
+                <li>
+                    {{ item.product.name }}
+                    × {{ item.quantity }}
+                    — {{ (item.price / 100)|format_currency('EUR') }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
