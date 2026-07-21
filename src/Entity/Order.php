@@ -4,11 +4,21 @@ namespace App\Entity;
 
 use App\Repository\OrderRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\OrderItem;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
+
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: 'orders')]
 class Order
 {
+    public function __construct()
+    {
+        $this->items = new ArrayCollection();
+    }
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -28,6 +38,12 @@ class Order
 
     #[ORM\ManyToOne]
     private ?Address $shippingAddress = null;
+
+    /**
+     * @var Collection<int, OrderItem>
+     */
+    #[ORM\OneToMany(mappedBy: 'purchaseOrder', targetEntity: OrderItem::class, cascade: ['persist'])]
+    private Collection $items;
 
     public function getId(): ?int
     {
@@ -91,6 +107,33 @@ class Order
     {
         $this->shippingAddress = $shippingAddress;
 
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderItem>
+     */
+    public function getItems(): Collection
+    {
+        return $this->items;
+    }
+
+    public function addItem(OrderItem $item): static
+    {
+        if (!$this->items->contains($item)) {
+            $this->items->add($item);
+            $item->setPurchaseOrder($this);
+        }
+        return $this;
+    }
+
+    public function removeItem(OrderItem $item): static
+    {
+        if ($this->items->removeElement($item)) {
+            if ($item->getPurchaseOrder() === $this) {
+                $item->setPurchaseOrder(null);
+            }
+        }
         return $this;
     }
 }
