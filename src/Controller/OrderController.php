@@ -45,7 +45,7 @@ final class OrderController extends AbstractController
             $entityManager->persist($address);
             $entityManager->flush();
 
-            $order = $orderService->createOrderFromCart($this->getUser(), $address);
+            $order = $orderService->createOrderFromCart($user, $address);
 
             $this->addFlash('success', 'Commande enregistrée !');
 
