@@ -22,7 +22,7 @@ public function sendOrderConfirmation(Order $order): void
         ->from('no-reply@shop-app.local')
         ->to($order->getCustomer()->getEmail())
         ->subject('Confirmation de votre commande n°' . $order->getId())
-        ->htmlTemplate('order/confirmation.html.twig')
+        ->htmlTemplate('emails/order_confirmation.html.twig')
         ->context(['order' => $order]);
 
     $this->mailer->send($email);
