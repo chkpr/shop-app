@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Psr\Log\LoggerInterface;
+use App\Service\OrderMailer;
 final class StripeWebhookController extends AbstractController
 {
 
@@ -22,6 +23,7 @@ final class StripeWebhookController extends AbstractController
     public function __construct(
         #[Autowire('%stripe_webhook_secret%')] private string $webhookSecret,
         private LoggerInterface $logger,
+        private OrderMailer $mailer,
     ) {
     }
 
@@ -54,6 +56,10 @@ final class StripeWebhookController extends AbstractController
                 if($order){
                     $order->setStatus('paid');
                     $entityManager->flush();
+
+                    $this->mailer->sendOrderConfirmation($order);
+
+                    $this->logger->info('Paiement reçu, commande envoyée', ['orderId' => $order->getId()]);
                 }
             }
         }

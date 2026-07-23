@@ -1,0 +1,17 @@
+<h1>Merci pour votre commande !</h1>
+
+<p>Nous avons bien reçu le paiement de votre commande n°{{ order.id }}</p>
+
+<h2>Détail</h2>
+
+<ul>
+    {% for item in order.items %}
+        <li>
+            {{ item.product.name }}
+            x {{ item.quantity }}
+            - {{ (item.price /100)|format_currency('EUR') }}
+        </li>
+    {% endfor %}
+</ul>
+
+<p><strong>Total : {{ (order.total / 100)|format_currency('EUR') }}</strong></p>
