@@ -19,5 +19,7 @@
                 </li>
             {% endfor %}
         </ul>
+
+        <a href="{{ path('app_order_pay', {id: order.id}) }}">Payer maintenant</a>
     {% endif %}
 {% endblock %}

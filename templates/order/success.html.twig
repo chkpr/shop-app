@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement effectué{% endblock %}
+
+{% block body %}
+    <h1>Merci pour votre paiement !</h1>
+    <p>Votre commande n°{{ order.id }} est en cours de traitement.</p>
+    <p>Vous recevrez une confirmation dès que le paiement sera validé.</p>
+{% endblock %}

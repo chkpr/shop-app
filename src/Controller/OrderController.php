@@ -15,8 +15,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Service\PaymentService;
 
 final class OrderController extends AbstractController
 {
@@ -68,6 +70,31 @@ final class OrderController extends AbstractController
         $order = $orderRepository->find($id);
 
         return $this->render('order/confirmation.html.twig', [
+            'order' => $order,
+        ]);
+    }
+
+    #[Route('/order/{id}/pay', name: 'app_order_pay')]
+    #[IsGranted('ROLE_USER')]
+    public function pay(int $id, OrderRepository $orderRepository, PaymentService $paymentService): Response
+    {
+        $order = $orderRepository->find($id);
+
+        $checkoutSession = $paymentService->createCheckoutSession(
+            $order,
+            $this->generateUrl('app_order_success', ['id' => $order->getId()], UrlGeneratorInterface::ABSOLUTE_URL),
+            $this->generateUrl('app_order_confirmation', ['id' => $order->getId()], UrlGeneratorInterface::ABSOLUTE_URL),
+        );
+
+        return $this->redirect($checkoutSession->url);
+    }
+
+    #[Route('/order/{id}/success', name: 'app_order_success')]
+    #[IsGranted('ROLE_USER')]
+    public function success(int $id, OrderRepository $orderRepository): Response
+    {
+        $order = $orderRepository->find($id);
+        return $this->render('order/success.html.twig', [
             'order' => $order,
         ]);
     }
