@@ -129,4 +129,9 @@ class Product
     {
         return $this->price/100;
     }
+
+    public function __toString(): string
+    {
+        return $this->name?? '';
+    }
 }
