@@ -1,0 +1,25 @@
+framework:
+    workflows:
+        order_status:
+            type: state_machine
+            marking_store:
+                type: method
+                property: status
+            supports:
+                - App\Entity\Order
+            initial_marking: pending
+            places:
+                - pending
+                - paid
+                - shipped
+                - delivered
+            transitions:
+                pay:
+                    from: pending
+                    to: paid
+                ship:
+                    from: paid
+                    to: shipped
+                deliver:
+                    from: shipped
+                    to: delivered

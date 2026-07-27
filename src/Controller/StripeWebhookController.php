@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Psr\Log\LoggerInterface;
 use App\Service\OrderMailer;
+use Symfony\Component\Workflow\WorkflowInterface;
+
 final class StripeWebhookController extends AbstractController
 {
 
@@ -24,6 +26,7 @@ final class StripeWebhookController extends AbstractController
         #[Autowire('%stripe_webhook_secret%')] private string $webhookSecret,
         private LoggerInterface $logger,
         private OrderMailer $mailer,
+        #[Autowire(service: 'state_machine.order_status')] private WorkflowInterface $orderWorkflow,
     ) {
     }
 
@@ -54,12 +57,18 @@ final class StripeWebhookController extends AbstractController
                 $order = $orderRepository->find($orderId);
 
                 if($order){
-                    $order->setStatus('paid');
-                    $entityManager->flush();
+                    if ($this->orderWorkflow->can($order, 'pay')) {
+                        $this->orderWorkflow->apply($order, 'pay');
+                        $entityManager->flush();
 
-                    $this->mailer->sendOrderConfirmation($order);
-
-                    $this->logger->info('Paiement reçu, commande envoyée', ['orderId' => $order->getId()]);
+                        $this->mailer->sendOrderConfirmation($order);
+                        $this->logger->info('Paiement reçu, commande envoyée', ['orderId' => $order->getId()]);
+                    } else {
+                        $this->logger->warning('Transition pay impossible', [
+                            'orderId' => $order->getId(),
+                            'status' => $order->getStatus(),
+                        ]);
+                    }
                 }
             }
         }
