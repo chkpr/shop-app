@@ -69,6 +69,12 @@ final class OrderController extends AbstractController
     {
         $order = $orderRepository->find($id);
 
+        if (!$order) {
+            throw $this->createNotFoundException();
+        }
+
+        $this->denyAccessUnlessGranted('VIEW', $order);
+
         return $this->render('order/confirmation.html.twig', [
             'order' => $order,
         ]);
@@ -79,6 +85,12 @@ final class OrderController extends AbstractController
     public function pay(int $id, OrderRepository $orderRepository, PaymentService $paymentService): Response
     {
         $order = $orderRepository->find($id);
+
+        if (!$order) {
+            throw $this->createNotFoundException();
+        }
+
+        $this->denyAccessUnlessGranted('VIEW', $order);
 
         $checkoutSession = $paymentService->createCheckoutSession(
             $order,
@@ -94,6 +106,13 @@ final class OrderController extends AbstractController
     public function success(int $id, OrderRepository $orderRepository): Response
     {
         $order = $orderRepository->find($id);
+
+        if (!$order) {
+            throw $this->createNotFoundException();
+        }
+
+        $this->denyAccessUnlessGranted('VIEW', $order);
+
         return $this->render('order/success.html.twig', [
             'order' => $order,
         ]);
