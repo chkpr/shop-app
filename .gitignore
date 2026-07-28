@@ -22,3 +22,7 @@
 ###> IDE ###
 .idea/
 ###< IDE ###
+
+###> node ###
+node_modules/
+###< node ###

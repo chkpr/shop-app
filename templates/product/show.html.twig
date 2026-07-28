@@ -4,7 +4,13 @@
 {% block title %} {{ product.name }} {% endblock %}
 
 {% block body %}
+
 <h1> {{ product.name }}</h1>
+    <div>
+    {% if product.imageName %}
+        <img class="product-image" src="{{ vich_uploader_asset(product, 'imageFile') }}" alt="{{ product.name }}"
+    {% endif %}
+    </div>
     <p>catégorie: {{ product.category.name }}</p>
     <p>{{ product.description }}</p>
 <p>{{ product.priceAsDecimal|format_currency('EUR') }}</p>
