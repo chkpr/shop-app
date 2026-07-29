@@ -1,3 +1,19 @@
-<div{{ attributes }}>
-    🛒 {{ this.getCount() }}
+<div {{ attributes }} class="cart-counter">
+    <span class="cart-icon">🛒 {{ this.getCount() }}</span>
+
+    {% if this.getCount() > 0 %}
+        <div class="cart-preview">
+            <ul>
+                {% for item in this.items %}
+                    <li>
+                        {{ item.product.name }}
+                        × {{ item.quantity }}
+                        — {{ (item.product.price / 100)|format_currency('EUR') }}
+                    </li>
+                {% endfor %}
+            </ul>
+            <p><strong>Total : {{ (this.total / 100)|format_currency('EUR') }}</strong></p>
+            <a href="{{ path('app_cart') }}">Voir le panier</a>
+        </div>
+    {% endif %}
 </div>

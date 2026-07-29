@@ -1,3 +1,30 @@
 body {
     background-color: skyblue;
 }
+
+.product-image {
+    width: 200px;
+}
+
+.cart-counter {
+    position: relative;
+    display: inline-block;
+}
+
+.cart-preview {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    min-width: 250px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+}
+
+.cart-counter:hover .cart-preview {
+    display: block;
+}

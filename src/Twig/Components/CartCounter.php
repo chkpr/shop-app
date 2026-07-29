@@ -33,4 +33,14 @@ final class CartCounter
     {
 
     }
+
+    public function getItems(): array
+    {
+        return $this->cartService->getFullCart();
+    }
+
+    public function getTotal(): int
+    {
+        return $this->cartService->getTotal();
+    }
 }
