@@ -14,6 +14,7 @@
                 {{ item.product.name }}
                 — quantité : {{ item.quantity }}
                 — {{ (item.product.price / 100)|format_currency('EUR') }}
+
             </li>
         {% else %}
             <li>Votre panier est vide.</li>

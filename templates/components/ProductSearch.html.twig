@@ -1,0 +1,22 @@
+<div {{ attributes }}>
+    <input
+        type="search"
+        data-model="query"
+        placeholder="Rechercher un produit..."
+        autocomplete="off"
+    >
+
+    <ul>
+        {% for product in this.products %}
+            <li>
+                <a href="{{ path('app_product_show', {slug: product.slug}) }}">
+                    {{ product.name }} — {{ (product.price / 100)|format_currency('EUR') }}
+                </a>
+            </li>
+        {% else %}
+            {% if this.query is not empty %}
+                <li>Aucun produit trouvé pour « {{ this.query }} ».</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
