@@ -117,4 +117,17 @@ final class OrderController extends AbstractController
             'order' => $order,
         ]);
     }
+
+    #[Route('/mes-commandes', name: 'app_order_list')]
+    #[IsGranted('ROLE_USER')]
+    public function list(OrderRepository $orderRepository): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $orders = $orderRepository->findByCustomer($user);
+        return $this->render('order/list.html.twig', [
+            'orders' => $orders,
+        ]);
+    }
 }

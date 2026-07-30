@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes commandes{% endblock %}
+
+{% block body %}
+    <h1>Mes commandes</h1>
+
+    {% if orders is empty %}
+        <p>Vous n'avez pas encore passé de commande.</p>
+    {% else %}
+        <ul>
+            {% for order in orders %}
+                <li>
+                    <a href="{{ path('app_order_confirmation', {id: order.id}) }}">
+                        Commande n°{{ order.id }}
+                        du {{ order.createdAt|date('d/m/Y') }}
+                        - {{ (order.total / 100)|format_currency('EUR') }}
+                        - {{ order.status }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

@@ -28,6 +28,9 @@
         {{ component('CartCounter') }}
     </a>
 
+    {% if app.user %}
+        <a href="{{ path('app_order_list') }}">Mes commandes</a>
+    {% endif %}
         {% block body %}
 
 
