@@ -39,9 +39,9 @@ jobs:
             - name: Create test database schema
               run: php bin/console doctrine:migrations:migrate --no-interaction --env=test
               env:
-                  DATABASE_URL: postgresql://shop:shop@127.0.0.1:5432/shop_app_test?serverVersion=16
+                  DATABASE_URL: postgresql://shop:shop@127.0.0.1:5432/shop_app?serverVersion=16
 
             - name: Run tests
               run: php bin/phpunit
               env:
-                  DATABASE_URL: postgresql://shop:shop@127.0.0.1:5432/shop_app_test?serverVersion=16
+                  DATABASE_URL: postgresql://shop:shop@127.0.0.1:5432/shop_app?serverVersion=16
